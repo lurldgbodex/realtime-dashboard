@@ -1,13 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import metricsReducer from "../features/metrics/metricsSlice";
-import alertsReducer from "../features/alerts/alertsSlice";
 import { apiSlice } from "../services/api";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
 export const store = configureStore({
   reducer: {
     metric: metricsReducer,
-    alerts: alertsReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
