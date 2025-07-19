@@ -1,21 +1,21 @@
+import { useEffect, useMemo, useState } from "react";
+import { ThemeContext, type ThemeMode } from "./ThemeContext";
 import { createTheme, ThemeProvider as MuiThemeProvider } from "@mui/material";
-import React, { createContext, useContext, useMemo, useState } from "react";
-
-type ThemeMode = "light" | "dark";
-
-type ThemeContextType = {
-  mode: ThemeMode;
-  toggleTheme: () => void;
-};
-
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+import LocalThemeStorage from "../../utils/storage/LocalThemeStorage";
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [mode, setMode] = useState<ThemeMode>("light");
+  const [mode, setMode] = useState<ThemeMode>(() => {
+    const themeMode = LocalThemeStorage.getTheme();
+    return themeMode ?? "light";
+  });
 
   const toggleTheme = () => {
     setMode((prev) => (prev === "light" ? "dark" : "light"));
   };
+
+  useEffect(() => {
+    LocalThemeStorage.setTheme(mode);
+  }, [mode]);
 
   const theme = useMemo(
     () =>
@@ -37,12 +37,4 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
     </ThemeContext.Provider>
   );
-};
-
-export const useTheme = () => {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error("useTheme must be used within a ThemeProvider");
-  }
-  return context;
 };

@@ -4,8 +4,8 @@ import "./index.css";
 import App from "./App.tsx";
 import { Provider } from "react-redux";
 import { store } from "./apps/reduxStore.ts";
-import { AuthProvider } from "./context/AuthContext.tsx";
-import { ThemeProvider } from "./context/ThemeContext.tsx";
+import { ThemeProvider } from "./context/theme/ThemeProvider.tsx";
+import { AuthProvider } from "./context/auth/AuthProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
